@@ -15,7 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
+#lineas de codigo para imagenes inicio
+from django.conf.urls.static import static
+from django.conf import settings
+from django.views.static import serve
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path ('pandepascua/', include('pandepascua.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+	urlpatterns += [
+	url(r'^photos/(?P<path>.*)$', serve, {
+		'document_root': settings.MEDIA_ROOT,
+		}),
+	]
+    #lineas de codigo para imagenes fin
